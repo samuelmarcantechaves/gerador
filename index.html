@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodGen - Gerador de Comidas</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <span>🍔</span>
+            <h1>Food<span>Gen</span></h1>
+        </div>
+
+        <p>Descubra sua próxima refeição</p>
+    </header>
+
+
+    <main class="container">
+
+        <section class="hero">
+            <div class="hero-text">
+                <span class="badge">✨ GERADOR INTELIGENTE</span>
+
+                <h2>
+                    O que você vai<br>
+                    <span>comer hoje?</span>
+                </h2>
+
+                <p>
+                    Escolha suas preferências e deixe o FoodGen
+                    encontrar uma comida perfeita para você.
+                </p>
+            </div>
+
+            <div class="hero-emoji">
+                🍕
+            </div>
+        </section>
+
+
+        <section class="generator">
+
+            <div class="section-title">
+                <h3>⚙️ Suas preferências</h3>
+                <p>Personalize o resultado do seu jeito.</p>
+            </div>
+
+
+            <div class="filters">
+
+                <!-- Tipo -->
+                <div class="filter">
+                    <label>🍬 Tipo</label>
+
+                    <select id="tipo">
+                        <option value="qualquer">🍽️ Tanto faz</option>
+                        <option value="doce">🍬 Doce</option>
+                        <option value="salgado">🧂 Salgado</option>
+                    </select>
+                </div>
+
+
+                <!-- Refeição -->
+                <div class="filter">
+                    <label>🍽️ Refeição</label>
+
+                    <select id="refeicao">
+                        <option value="qualquer">🎲 Qualquer uma</option>
+                        <option value="cafe">☀️ Café da manhã</option>
+                        <option value="almoco">🍛 Almoço</option>
+                        <option value="lanche">🍪 Lanche</option>
+                        <option value="jantar">🌙 Jantar</option>
+                    </select>
+                </div>
+
+
+                <!-- Preço -->
+                <div class="filter">
+                    <label>💰 Preço</label>
+
+                    <select id="preco">
+                        <option value="qualquer">🎲 Qualquer preço</option>
+                        <option value="barato">💰 Até R$ 10</option>
+                        <option value="medio">💰💰 R$ 10–25</option>
+                        <option value="caro">💰💰💰 R$ 25–50</option>
+                        <option value="premium">💰💰💰💰 Acima de R$ 50</option>
+                    </select>
+                </div>
+
+
+                <!-- Tempo -->
+                <div class="filter">
+                    <label>⏱️ Tempo</label>
+
+                    <select id="tempo">
+                        <option value="qualquer">🎲 Qualquer tempo</option>
+                        <option value="rapido">⚡ Até 10 min</option>
+                        <option value="medio">🕐 10–30 min</option>
+                        <option value="demorado">🕑 30–60 min</option>
+                        <option value="longo">👨‍🍳 Mais de 1 hora</option>
+                    </select>
+                </div>
+
+
+                <!-- Dificuldade -->
+                <div class="filter">
+                    <label>🎯 Dificuldade</label>
+
+                    <select id="dificuldade">
+                        <option value="qualquer">🎲 Qualquer</option>
+                        <option value="facil">🟢 Fácil</option>
+                        <option value="medio">🟡 Médio</option>
+                        <option value="dificil">🔴 Difícil</option>
+                    </select>
+                </div>
+
+
+                <!-- Culinária -->
+                <div class="filter">
+                    <label>🌎 Culinária</label>
+
+                    <select id="culinaria">
+                        <option value="qualquer">🌎 Qualquer</option>
+                        <option value="brasileira">🇧🇷 Brasileira</option>
+                        <option value="italiana">🇮🇹 Italiana</option>
+                        <option value="japonesa">🇯🇵 Japonesa</option>
+                        <option value="mexicana">🇲🇽 Mexicana</option>
+                        <option value="americana">🇺🇸 Americana</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <button class="generate-btn" onclick="gerarComida()">
+                <span>🎲</span>
+                GERAR COMIDA
+            </button>
+
+        </section>
+
+
+        <!-- Resultado -->
+
+        <section id="resultado" class="result hidden">
+
+            <div class="result-header">
+                <span class="result-label">✨ SEU RESULTADO</span>
+
+                <button class="favorite" onclick="favoritar()">
+                    ♡
+                </button>
+            </div>
+
+
+            <div class="food-main">
+
+                <div class="food-icon" id="foodIcon">
+                    🍕
+                </div>
+
+                <div>
+                    <h2 id="foodName">Pizza</h2>
+                    <p id="foodDescription">
+                        Uma deliciosa opção para matar a fome.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="food-info">
+
+                <div class="info-card">
+                    <span>🍬</span>
+                    <small>Tipo</small>
+                    <strong id="foodType">Salgado</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>💰</span>
+                    <small>Preço</small>
+                    <strong id="foodPrice">R$ 15–25</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>⏱️</span>
+                    <small>Tempo</small>
+                    <strong id="foodTime">30 min</strong>
+                </div>
+
+                <div class="info-card">
+                    <span>🎯</span>
+                    <small>Dificuldade</small>
+                    <strong id="foodDifficulty">Fácil</strong>
+                </div>
+
+            </div>
+
+
+            <div class="result-buttons">
+
+                <button class="again-btn" onclick="gerarComida()">
+                    🔄 Gerar outra
+                </button>
+
+                <button class="share-btn" onclick="compartilhar()">
+                    📤 Compartilhar
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>🍔 FoodGen • Encontre algo delicioso para comer.</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
