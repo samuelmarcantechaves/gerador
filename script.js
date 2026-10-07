@@ -371,10 +371,9 @@ let comidaAtual = null;
 let favoritado = false;
 
 // ========================================================
-// LÓGICA PRINCIPAL - GERAR COMIDA (CLARA)
+// LÓGICA PRINCIPAL - GERAR COMIDA
 // ========================================================
 function gerarComida() {
-    // 1. Obtém os valores selecionados nos campos HTML
     const tipo = document.getElementById("tipo").value;
     const refeicao = document.getElementById("refeicao").value;
     const preco = document.getElementById("preco").value;
@@ -382,7 +381,6 @@ function gerarComida() {
     const dificuldade = document.getElementById("dificuldade").value;
     const culinaria = document.getElementById("culinaria").value;
 
-    // 2. Filtra o array de comidas conforme os critérios escolhidos
     const filtradas = comidas.filter(item => {
         return (tipo === "qualquer" || item.tipo === tipo) &&
                (refeicao === "qualquer" || item.refeicao === refeicao) &&
@@ -392,35 +390,32 @@ function gerarComida() {
                (culinaria === "qualquer" || item.culinaria === culinaria);
     });
 
-    // 3. Sorteia aleatoriamente um item entre os filtrados
     if (filtradas.length > 0) {
         const indice = Math.floor(Math.random() * filtradas.length);
         comidaAtual = filtradas[indice];
     } else {
-        // Se a busca zerar, avisa e seleciona uma comida aleatória qualquer
         mostrarToast("Nenhuma comida idêntica encontrada. Sorteando uma opção próxima!");
         const indice = Math.floor(Math.random() * comidas.length);
         comidaAtual = comidas[indice];
     }
 
-    // Reset do estado de favorito ao gerar uma nova receita
     favoritado = false;
     atualizarBotaoFavorito();
 
-    // Esconde a caixa de compartilhamento se estiver aberta
-    document.getElementById("shareBox").classList.add("hidden");
+    const shareBox = document.getElementById("shareBox");
+    if (shareBox) {
+        shareBox.classList.add("hidden");
+    }
 
-    // 4. Renderiza a comida na interface
     exibirResultado(comidaAtual);
 }
 
 // ========================================================
-// MANIPULAÇÃO DO DOM - RENDERIZAÇÃO (EMILY)
+// MANIPULAÇÃO DO DOM - RENDERIZAÇÃO
 // ========================================================
 function exibirResultado(comida) {
     const painel = document.getElementById("resultado");
 
-    // Atualiza os elementos de texto e ícones
     document.getElementById("foodIcon").textContent = comida.icone;
     document.getElementById("foodTypeBadge").textContent = comida.tipo.toUpperCase();
     document.getElementById("foodName").textContent = comida.nome;
@@ -431,7 +426,6 @@ function exibirResultado(comida) {
     document.getElementById("foodTime").textContent = comida.tempoTexto;
     document.getElementById("foodDifficulty").textContent = comida.dificuldadeTexto;
 
-    // Preenche a lista de ingredientes (UL)
     const ul = document.getElementById("ingredientsList");
     ul.innerHTML = "";
     comida.ingredientes.forEach(ing => {
@@ -440,7 +434,6 @@ function exibirResultado(comida) {
         ul.appendChild(li);
     });
 
-    // Preenche o modo de preparo (OL)
     const ol = document.getElementById("stepsList");
     ol.innerHTML = "";
     comida.preparo.forEach(passo => {
@@ -449,15 +442,12 @@ function exibirResultado(comida) {
         ol.appendChild(li);
     });
 
-    // Mostra o resultado removendo a classe hidden
     painel.classList.remove("hidden");
-
-    // Rola a tela até o resultado
     painel.scrollIntoView({ behavior: "smooth" });
 }
 
 // ========================================================
-// RECURSOS INTERATIVOS - FAVORITOS E COMPARTILHAMENTO (EMILY)
+// RECURSOS INTERATIVOS - FAVORITOS E COMPARTILHAMENTO
 // ========================================================
 function favoritar() {
     favoritado = !favoritado;
@@ -472,6 +462,7 @@ function favoritar() {
 
 function atualizarBotaoFavorito() {
     const btn = document.querySelector(".favorite");
+    if (!btn) return;
     if (favoritado) {
         btn.classList.add("active");
         btn.textContent = "♥";
@@ -487,7 +478,6 @@ function compartilhar() {
     const shareBox = document.getElementById("shareBox");
     const shareInput = document.getElementById("shareLink");
 
-    // Monta a URL dinâmica com o ID da comida
     const urlAtual = window.location.origin + window.location.pathname;
     const linkComida = `${urlAtual}?id=${comidaAtual.id}`;
 
@@ -499,11 +489,9 @@ function compartilhar() {
 function copiarLink() {
     const shareInput = document.getElementById("shareLink");
 
-    // Copia o texto para a área de transferência do usuário
     navigator.clipboard.writeText(shareInput.value).then(() => {
         mostrarToast("Link copiado para a área de transferência! 🔗");
     }).catch(() => {
-        // Fallback para navegadores sem suporte ao clipboard API
         shareInput.select();
         document.execCommand("copy");
         mostrarToast("Link copiado! 🔗");
@@ -512,10 +500,10 @@ function copiarLink() {
 
 function mostrarToast(mensagem) {
     const toast = document.getElementById("toast");
+    if (!toast) return;
     toast.textContent = mensagem;
     toast.classList.add("show");
 
-    // Oculta a notificação após 3 segundos
     setTimeout(() => {
         toast.classList.remove("show");
     }, 3000);
@@ -525,7 +513,6 @@ function mostrarToast(mensagem) {
 // EVENTO DE CARREGAMENTO - VERIFICA LINK COMPARTILHADO
 // ========================================================
 window.addEventListener("DOMContentLoaded", () => {
-    // Lê os parâmetros da URL
     const params = new URLSearchParams(window.location.search);
     const idParam = params.get("id");
 
